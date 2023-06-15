@@ -1,9 +1,11 @@
+using System.Threading.Tasks;
 using MariageApp.API.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MariageApp.API.Controllers;
-
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ValuesController : ControllerBase
@@ -24,6 +26,7 @@ public class ValuesController : ControllerBase
 
         return Ok(values);
     }
+    [AllowAnonymous]
     [HttpGet("{n}")]
     public async Task<IActionResult> GetValue(int n)
     {
