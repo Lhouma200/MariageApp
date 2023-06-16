@@ -17,7 +17,7 @@ public class ValuesController : ControllerBase
 
     }
 
-
+  [AllowAnonymous]
     [HttpGet]
     public async Task<IActionResult> GetValues()
     {
