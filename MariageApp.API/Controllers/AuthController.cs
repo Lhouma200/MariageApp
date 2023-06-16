@@ -27,6 +27,10 @@ namespace MariageApp.API.Controllers
 
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
+               if (!ModelState.IsValid)
+    {
+        return UnprocessableEntity(ModelState);
+    }
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
             if (await _repo.UserExists(userForRegisterDto.Username)) return
             BadRequest("L'utisateur existe ");
@@ -43,6 +47,7 @@ namespace MariageApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
+      
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if (userFromRepo == null) return Unauthorized();
             var claims = new[]{
