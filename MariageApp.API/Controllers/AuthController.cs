@@ -36,7 +36,9 @@ namespace MariageApp.API.Controllers
             BadRequest("L'utisateur existe ");
             var userToCreate = new User
             {
-                Username = userForRegisterDto.Username
+                Username = userForRegisterDto.Username,
+              
+                
             };
 
             var CreatedUser = await _repo.Register(userToCreate, userForRegisterDto.Password);

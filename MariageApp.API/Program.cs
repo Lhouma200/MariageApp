@@ -11,17 +11,28 @@ using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using MariageApp.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
+builder.Services.AddMvc().AddNewtonsoftJson(o => 
+{
+    o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});   
 builder.Services.AddCors();
+  builder.Services.AddAutoMapper();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+     
+builder.Services.AddTransient<TrialData>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IMariageRepository, MariageRepository>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(Options =>
             {
@@ -34,7 +45,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
                 };
             });
-           
+
 
 builder.Services.Configure<ApiBehaviorOptions>(options
     => options.SuppressModelStateInvalidFilter = true);
@@ -44,12 +55,17 @@ builder.Services.Configure<ApiBehaviorOptions>(options
 
 var app = builder.Build();
 
+
+
+
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
+
 }
 else
 {
@@ -71,7 +87,13 @@ else
 }
 
 
+
 app.UseHttpsRedirection();
+
+
+
+
+
 app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 app.UseAuthentication();
 app.UseAuthorization();
