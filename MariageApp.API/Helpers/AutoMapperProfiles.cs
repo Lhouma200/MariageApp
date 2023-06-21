@@ -19,6 +19,7 @@ namespace MariageApp.API.Helpers
             .ForMember(dest=>dest.Age,opt=>{opt.ResolveUsing(src=>src.DateOfBirth.CalculateAge());});
             
             CreateMap<Photo,PhotoForDetailsDto>();
+            CreateMap<UserForUpdateDto,User>();
             
             
           

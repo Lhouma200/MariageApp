@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using MariageApp.API.Data;
 using AutoMapper;
 using MariageApp.API.Dtos;
+using System.Security.Claims;
 
 namespace MariageApp.API.Controllers
 {
@@ -29,8 +30,8 @@ namespace MariageApp.API.Controllers
             return Ok(usersToReturn);
 
         }
-
-        [HttpGet("{id}")]
+    [HttpGet("{id}")]
+       
         public async Task<IActionResult> Getuser(int id)
         {
             var user = await _repo.GetUser(id);
@@ -39,5 +40,19 @@ namespace MariageApp.API.Controllers
 
            
         }
+            [HttpPut("{id}")]
+         public async Task<IActionResult> UpdateUser(int id,UserForUpdateDto userForUpdateDto){
+             if(id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+             return Unauthorized();
+             var userFromRepo = await _repo.GetUser(id);
+             _mapper.Map(userForUpdateDto,userFromRepo);
+             if(await _repo.SaveAll())
+                 return NoContent();
+             
+
+             throw new Exception($"حدثت مشكلة في تعديل بيانات المشترك رقم {id}");
+             
+             
+         }
     }
 }

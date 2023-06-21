@@ -2,11 +2,11 @@
 <nav class="rtl navbar navbar-expand-md navbar-dark bg-primary">
   <a style="margin-top:-10px;color:pink;
 font-family:ToyorAljanah;font-size:2.25rem;font-weight:bolder" class="navbar-brand"
-    [routerLink]="['']"  ><i class="fa fa-heart" aria-hidden="true"></i>زواج<i class="fa fa-heart" aria-hidden="true"></i></a>
+    [routerLink]="['/members']"  ><i class="fa fa-heart" aria-hidden="true"></i>زواج<i class="fa fa-heart" aria-hidden="true"></i></a>
 
   <ul *ngIf="loggedIn()" style="letter-spacing:1px;font-weight:bold;font-family:'JF Flat';font-size:1.2rem" class="navbar-nav mr-auto">
     <li class="nav-item">
-      <a class="nav-link" [routerLink]="['']"  >الرئيسية </a>
+      <a class="nav-link" [routerLink]="['/members']"  >الرئيسية </a>
     </li>
     <li class="nav-item" routerLinkActive="active">
       <a class="nav-link" [routerLink]="['/members']"  >بحث</a>
@@ -26,7 +26,8 @@ font-family:ToyorAljanah;font-size:2.25rem;font-weight:bolder" class="navbar-bra
       {{authService.decodedToken?.unique_name | titlecase}}
     </a>
     <div *dropdownMenu class="dropdown-menu mt-3">
-      <a class="dropdown-item mnav-link "><i class="fa fa-user"></i>
+      <a class="dropdown-item mnav-link " [routerLink]="['/member/edit']" 
+     ><i class="fa fa-user"></i>
         ملفي الشخصي</a>
       <div class="dropdown-divider"></div>
       <a (click)="loggedOut()" class="dropdown-item mnav-link" (click)="loggedOut();"><i class="fa fa-sign-out"></i>
