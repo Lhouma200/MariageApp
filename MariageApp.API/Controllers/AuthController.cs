@@ -29,22 +29,14 @@ namespace MariageApp.API.Controllers
 
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
-            if (await _repo.UserExists(userForRegisterDto.Username)) return
-            BadRequest("L'utisateur existe ");
-            var userToCreate = new User
-            {
-                Username = userForRegisterDto.Username,
-
-
-            };
+            if (await _repo.UserExists(userForRegisterDto.Username))
+                return BadRequest("هذا المستخدم مسجل من قبل");
+            var userToCreate = _mapper.Map<User>(userForRegisterDto);
 
             var CreatedUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
-            return StatusCode(201);
+            var userToReturn = _mapper.Map<UserForDetailsDto>(CreatedUser);
+            return CreatedAtRoute("GetUser",new{controller = "Users",id=CreatedUser.Id},userToReturn);
 
 
         }

@@ -30,7 +30,7 @@ namespace MariageApp.API.Controllers
             return Ok(usersToReturn);
 
         }
-    [HttpGet("{id}")]
+    [HttpGet("{id}",Name ="GetUser")]
        
         public async Task<IActionResult> Getuser(int id)
         {

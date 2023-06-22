@@ -6,7 +6,7 @@ namespace MariageApp.API.Dtos
 {
     public class UserForRegisterDto
     {
-        [Required]
+         [Required]
         
         public string Username { get; set; }
         [StringLength(8,MinimumLength=4,ErrorMessage="يجب أن لا تقل كلمة السر عن أربعة أحرف ولا تزيد عن ثمانية")]
@@ -22,7 +22,6 @@ namespace MariageApp.API.Dtos
         public string City { get; set; }
         [Required]
         public string Country { get; set; }
-        public string  Introduction { get; set; }
         public DateTime Created { get; set; }
         public DateTime LastActive { get; set; }
         public UserForRegisterDto()

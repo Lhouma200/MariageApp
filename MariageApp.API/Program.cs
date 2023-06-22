@@ -26,12 +26,11 @@ builder.Services.AddMvc().AddNewtonsoftJson(o =>
 builder.Services.AddCors();
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
-  builder.Services.AddAutoMapper();
+builder.Services.AddAutoMapper(typeof(Program));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
      
-builder.Services.AddTransient<TrialData>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IMariageRepository, MariageRepository>();
 
