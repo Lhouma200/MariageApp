@@ -7,7 +7,7 @@ using MariageApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
-
+using AutoMapper;
 
 namespace MariageApp.API.Controllers
 {
@@ -17,8 +17,10 @@ namespace MariageApp.API.Controllers
     {
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(IAuthRepository repo, IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
         {
+           _mapper = mapper;
             _config = config;
             _repo = repo;
 
@@ -27,18 +29,18 @@ namespace MariageApp.API.Controllers
 
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
         {
-               if (!ModelState.IsValid)
-    {
-        return UnprocessableEntity(ModelState);
-    }
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
             userForRegisterDto.Username = userForRegisterDto.Username.ToLower();
             if (await _repo.UserExists(userForRegisterDto.Username)) return
             BadRequest("L'utisateur existe ");
             var userToCreate = new User
             {
                 Username = userForRegisterDto.Username,
-              
-                
+
+
             };
 
             var CreatedUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
@@ -49,7 +51,7 @@ namespace MariageApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
-      
+
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if (userFromRepo == null) return Unauthorized();
             var claims = new[]{
@@ -69,9 +71,11 @@ namespace MariageApp.API.Controllers
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var user = _mapper.Map<UserForListDto>(userFromRepo);
             return Ok(new
             {
-                token = tokenHandler.WriteToken(token)
+                token = tokenHandler.WriteToken(token),
+                user
 
             });
 

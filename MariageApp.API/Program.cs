@@ -24,6 +24,8 @@ builder.Services.AddMvc().AddNewtonsoftJson(o =>
     o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });   
 builder.Services.AddCors();
+builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+
   builder.Services.AddAutoMapper();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

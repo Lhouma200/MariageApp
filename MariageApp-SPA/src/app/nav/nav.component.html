@@ -20,6 +20,7 @@ font-family:ToyorAljanah;font-size:2.25rem;font-weight:bolder" class="navbar-bra
    
   </ul>
   <div *ngIf="loggedIn()" class="dropdown" dropdown>
+    
     <a dropdownToggle   style="letter-spacing:0.5px;font-weight:bold;font-family:'JF Flat'
     ;font-size:1.2rem" class="dropdown-toggle text-light nav-link">
       مرحبا بك
@@ -32,8 +33,22 @@ font-family:ToyorAljanah;font-size:2.25rem;font-weight:bolder" class="navbar-bra
       <div class="dropdown-divider"></div>
       <a (click)="loggedOut()" class="dropdown-item mnav-link" (click)="loggedOut();"><i class="fa fa-sign-out"></i>
         تسجيل الخروج</a>
+       
     </div>
+  
   </div>
+  <span  *ngIf="loggedIn()" >
+   
+    <img src="{{photoUrl}}" alt="">
+  </span>
+  
+  
+
+     
+  
+
+
+  
   <form *ngIf="!loggedIn()" (ngSubmit)="login()" #LoginForm="ngForm" class="ml-5 form-inline my-2 my-lg-0">
     <input name="username" required  class="form-control mr-sm-2" type="text" [(ngModel)]="model.username" placeholder="إسم المشترك">
     <input name="password" required class="form-control mr-sm-2" type="password" [(ngModel)]="model.password" placeholder="كلمة السر">
