@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule,Pipe, PipeTransform } from '@angular/core';
+
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import {  BsDropdownModule, TabsModule } from 'ngx-bootstrap';
@@ -37,6 +38,15 @@ import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChangesGuard } from './_guards/prevent-unsaved-changes.guard';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import { TimeAgoPipe } from 'time-ago-pipe';
+
+
+
+@Pipe({
+  name: 'timeAgo',
+  pure: false
+})
+export class TimeAgoExtendsPipe extends TimeAgoPipe {}
 
 
 export function tokenGetter() {
@@ -54,7 +64,8 @@ export function tokenGetter() {
       ListsComponent,
       MessagesComponent,
       MemberCardComponent,
-      MemberDetailComponent,MemberEditComponent, PhotoEditorComponent
+      MemberDetailComponent,MemberEditComponent, PhotoEditorComponent,
+      TimeAgoExtendsPipe
    ],
   imports: [
     BrowserModule,

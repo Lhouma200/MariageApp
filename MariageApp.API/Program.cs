@@ -33,6 +33,7 @@ builder.Services.AddSwaggerGen();
      
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IMariageRepository, MariageRepository>();
+builder.Services.AddScoped<LogUserActivity>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(Options =>

@@ -4,9 +4,11 @@ using MariageApp.API.Data;
 using AutoMapper;
 using MariageApp.API.Dtos;
 using System.Security.Claims;
+using MariageApp.API.Helpers;
 
 namespace MariageApp.API.Controllers
 {
+     [ServiceFilter(typeof(LogUserActivity))]
     [Authorize]
     [Route("[controller]")]
     [ApiController]

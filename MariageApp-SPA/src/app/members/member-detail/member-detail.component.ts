@@ -12,8 +12,13 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class MemberDetailComponent implements OnInit {
 user:User;
+created:string;
+age:string;
+ options :  Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 galleryOptions: NgxGalleryOptions[];
 galleryImages: NgxGalleryImage[];
+showIntro:boolean=true;
+showLook:boolean=true;
   constructor(private userService: UserService, private alertify: AlertifyService,
     private route: ActivatedRoute) { }
 
@@ -21,6 +26,7 @@ galleryImages: NgxGalleryImage[];
    // this.loadUser();
     this.route.data.subscribe(data => {
       this.user = data['user'];
+      
   } ) ;
   this.galleryOptions=[{
     width:'400px',height:'400px',imagePercent:100,thumbnailsColumns:4,
@@ -28,6 +34,10 @@ galleryImages: NgxGalleryImage[];
   }]
 
   this.galleryImages=this.getImages();
+  this.created = new Date(this.user.created).toLocaleString('ar-EG',this.options).replace('،','');
+  this.age = this.user.age.toLocaleString('ar-EG');
+  this.showIntro=true;
+  this.showLook=true;
 
 
 } 
