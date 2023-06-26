@@ -13,6 +13,8 @@ using MariageApp.API.Helpers;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AutoMapper;
+using MariageApp.API.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,10 +25,14 @@ builder.Services.AddMvc().AddNewtonsoftJson(o =>
 {
     o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
 });   
-builder.Services.AddCors();
+
+builder.Services.AddSignalR();
+builder.Services.AddCors(options => {
+    options.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((hosts) => true));
+});
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -96,9 +102,15 @@ app.UseHttpsRedirection();
 
 
 
-app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+app.UseCors("CORSPolicy");
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseEndpoints(endpoints => {
+    endpoints.MapControllers();
+    endpoints.MapHub <ChatHub> ("/chat");
+});
+
 
 
 app.MapControllers();

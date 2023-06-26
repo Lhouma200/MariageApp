@@ -15,6 +15,7 @@ export class AuthGuard implements CanActivate {
   }
   canActivate():  boolean  {
     if(this.authService.loggedIn()){
+      this.authService.hubConnection.stop();
       return true;
     }
     this.alertify.error('vous devez vous logger');

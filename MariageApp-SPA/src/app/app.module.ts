@@ -12,6 +12,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 
 
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
@@ -40,6 +41,8 @@ import { PhotoEditorComponent } from './members/photo-editor/photo-editor.compon
 import { FileUploadModule } from 'ng2-file-upload';
 import { TimeAgoPipe } from 'time-ago-pipe';
 import { ListResolver } from './_resolvers/lists.resolver';
+import { MessageResolver } from './_resolvers/message.resolver ';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 
 
 
@@ -66,7 +69,8 @@ export function tokenGetter() {
       MessagesComponent,
       MemberCardComponent,
       MemberDetailComponent,MemberEditComponent, PhotoEditorComponent,
-      TimeAgoExtendsPipe
+      TimeAgoExtendsPipe,
+      MemberMessagesComponent
    ],
   imports: [
     BrowserModule,
@@ -76,6 +80,7 @@ export function tokenGetter() {
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
+   
    
    
      
@@ -106,7 +111,8 @@ export function tokenGetter() {
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
-    ListResolver
+    ListResolver,
+    MessageResolver
    
   ],
   bootstrap: [AppComponent],
