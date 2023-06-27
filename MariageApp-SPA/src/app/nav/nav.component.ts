@@ -20,11 +20,14 @@ hubConnection:HubConnection;
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(
       photoUrl =>this.photoUrl=photoUrl);
-      this.userService.getUnreadCount(this.authService.decodedToken.nameid).subscribe(
-        res=>{this.authService.unreadCount.next(res.toString());
-        this.authService.latestUnreadCount.subscribe(res=>{this.count=res;});
-        }
-      );
+      if(this.loggedIn){
+        this.userService.getUnreadCount(this.authService.decodedToken.nameid).subscribe(
+          res=>{this.authService.unreadCount.next(res.toString());
+          this.authService.latestUnreadCount.subscribe(res=>{this.count=res;});
+          }
+        );
+        this.getPaymentForUser();
+      }
       this.hubConnection = new HubConnectionBuilder().withUrl("http://localhost:5112/chat").build();
       this.hubConnection.start();
       this.hubConnection.on('count', () => {
@@ -43,6 +46,7 @@ hubConnection:HubConnection;
         this.userService.getUnreadCount(this.authService.decodedToken.nameid).subscribe(res=>{
           this.authService.unreadCount.next(res.toString());
           this.authService.latestUnreadCount.subscribe(res=>{this.count=res;});
+          this.getPaymentForUser();
                });	 },
         error => { this.alertify.error(error) },
         () => { this.router.navigate(['/members']); }
@@ -55,11 +59,22 @@ hubConnection:HubConnection;
   loggedOut(){
     localStorage.removeItem('token');
     this.authService.decodedToken=null;
+    this.authService.paid = false;
     localStorage.removeItem('user');
     this.authService.currentUser=null;
     this.alertify.message('تم الخروج');
     this.router.navigate(['/home']);
     
+  }
+  getPaymentForUser(){
+    this.userService.getPaymentForUser(this.authService.currentUser.id).subscribe(
+      res =>{
+        if(res !== null)
+          this.authService.paid=true;
+        else
+        this.authService.paid = false;
+      }
+    )
   }
 }
 

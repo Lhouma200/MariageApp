@@ -43,6 +43,7 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { ListResolver } from './_resolvers/lists.resolver';
 import { MessageResolver } from './_resolvers/message.resolver ';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { PaymentComponent } from './payment/payment.component';
 
 
 
@@ -70,7 +71,8 @@ export function tokenGetter() {
       MemberCardComponent,
       MemberDetailComponent,MemberEditComponent, PhotoEditorComponent,
       TimeAgoExtendsPipe,
-      MemberMessagesComponent
+      MemberMessagesComponent,
+      PaymentComponent
    ],
   imports: [
     BrowserModule,

@@ -14,29 +14,32 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AutoMapper;
 using MariageApp.API.Models;
-
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<DataContext>(x => x.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddControllers();
-builder.Services.AddMvc().AddNewtonsoftJson(o => 
+builder.Services.AddMvc().AddNewtonsoftJson(o =>
 {
     o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
-});   
+});
 
 builder.Services.AddSignalR();
-builder.Services.AddCors(options => {
+builder.Services.AddCors(options =>
+{
     options.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((hosts) => true));
 });
 builder.Services.Configure<CloudinarySettings>(builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-     
+
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IMariageRepository, MariageRepository>();
 builder.Services.AddScoped<LogUserActivity>();
@@ -68,6 +71,8 @@ var app = builder.Build();
 
 
 // Configure the HTTP request pipeline.
+StripeConfiguration.ApiKey = app.Configuration.GetSection("Stripe:SecretKey").Value;
+
 if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
@@ -106,9 +111,10 @@ app.UseCors("CORSPolicy");
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints => {
+app.UseEndpoints(endpoints =>
+{
     endpoints.MapControllers();
-    endpoints.MapHub <ChatHub> ("/chat");
+    endpoints.MapHub<ChatHub>("/chat");
 });
 
 
