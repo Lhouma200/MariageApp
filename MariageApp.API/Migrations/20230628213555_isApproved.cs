@@ -5,23 +5,24 @@
 namespace MariageApp.API.Migrations
 {
     /// <inheritdoc />
-    public partial class AddPublicId : Migration
+    public partial class isApproved : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "PublicId",
+            migrationBuilder.AddColumn<bool>(
+                name: "IsApproved",
                 table: "Photos",
-                type: "TEXT",
-                nullable: true);
+                type: "INTEGER",
+                nullable: false,
+                defaultValue: false);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PublicId",
+                name: "IsApproved",
                 table: "Photos");
         }
     }

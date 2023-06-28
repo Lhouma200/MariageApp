@@ -15,6 +15,7 @@ import { MessageResolver } from './_resolvers/message.resolver ';
 import { PaymentComponent } from './payment/payment.component';
 import { MessagesGuard } from './_guards/messages.guard';
 import { ChargeGuard } from './_guards/charge.guard';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
     {
@@ -35,7 +36,8 @@ export const appRoutes: Routes = [
                 users:ListResolver
             } },
             { path: 'messages', component: MessagesComponent,canActivate:[MessagesGuard] , resolve:{messages:MessageResolver} },
-            { path: 'charge', component: PaymentComponent ,canActivate:[ChargeGuard]}
+            { path: 'charge', component: PaymentComponent ,canActivate:[ChargeGuard]},
+            { path: 'admin', component: AdminPanelComponent ,data:{roles:['Admin','Moderator']}}
         ]
     },
    

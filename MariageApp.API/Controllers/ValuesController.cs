@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MariageApp.API.Controllers;
-[Authorize]
+
 [ApiController]
 [Route("[controller]")]
 public class ValuesController : ControllerBase
@@ -17,7 +17,7 @@ public class ValuesController : ControllerBase
 
     }
 
-  [AllowAnonymous]
+[Authorize (Roles ="Admin")]
     [HttpGet]
     public async Task<IActionResult> GetValues()
     {
@@ -26,7 +26,7 @@ public class ValuesController : ControllerBase
 
         return Ok(values);
     }
-    [AllowAnonymous]
+[Authorize (Roles ="Member")]
     [HttpGet("{n}")]
     public async Task<IActionResult> GetValue(int n)
     {

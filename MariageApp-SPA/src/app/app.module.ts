@@ -1,17 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule,Pipe, PipeTransform } from '@angular/core';
+import { NgModule, Pipe, PipeTransform } from '@angular/core';
 
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import {  BsDropdownModule, ButtonsModule, PaginationModule, TabsModule } from 'ngx-bootstrap';
-import { BsDatepickerModule } from 'ngx-bootstrap/datepicker'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  BsDropdownModule,
+  ButtonsModule,
+  ModalModule,
+  PaginationModule,
+  TabsModule,
+} from 'ngx-bootstrap';
+import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
-
-
-
-
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -44,64 +46,70 @@ import { ListResolver } from './_resolvers/lists.resolver';
 import { MessageResolver } from './_resolvers/message.resolver ';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 import { PaymentComponent } from './payment/payment.component';
-
-
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/has-role.directive';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { AdminService } from './_services/admin.service';
+import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
 
 @Pipe({
   name: 'timeAgo',
-  pure: false
+  pure: false,
 })
 export class TimeAgoExtendsPipe extends TimeAgoPipe {}
-
 
 export function tokenGetter() {
   return localStorage.getItem('token');
 }
 
 @NgModule({
-  declarations: [							
-      AppComponent,
-   
-      NavComponent,
-      HomeComponent,
-      RegisterComponent,
-      MemberListComponent,
-      ListsComponent,
-      MessagesComponent,
-      MemberCardComponent,
-      MemberDetailComponent,MemberEditComponent, PhotoEditorComponent,
-      TimeAgoExtendsPipe,
-      MemberMessagesComponent,
-      PaymentComponent
-   ],
+  declarations: [
+    AppComponent,
+
+    NavComponent,
+    HomeComponent,
+    RegisterComponent,
+    MemberListComponent,
+    ListsComponent,
+    MessagesComponent,
+    MemberCardComponent,
+    MemberDetailComponent,
+    MemberEditComponent,
+    PhotoEditorComponent,
+    TimeAgoExtendsPipe,
+    MemberMessagesComponent,
+    PaymentComponent,
+    AdminPanelComponent,
+    HasRoleDirective,
+    UserManagementComponent,
+    PhotoManagementComponent,
+    RolesModalComponent,
+  ],
   imports: [
     BrowserModule,
-   
+
     NgxGalleryModule,
     FileUploadModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-   
-   
-   
-     
-     ReactiveFormsModule,
-     ButtonsModule.forRoot(),
-     PaginationModule.forRoot(),
-     BsDatepickerModule.forRoot(),
-   BsDropdownModule.forRoot(),
+
+    ReactiveFormsModule,
+    ButtonsModule.forRoot(),
+    PaginationModule.forRoot(),
+    BsDatepickerModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     TabsModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
         whitelistedDomains: ['localhost:5112'],
-        blacklistedRoutes: ['localhost:5112/auth']
-      }
-    })
-   
-   
+        blacklistedRoutes: ['localhost:5112/auth'],
+      },
+    }),
   ],
   providers: [
     AuthService,
@@ -114,10 +122,10 @@ export function tokenGetter() {
     MemberListResolver,
     MemberEditResolver,
     ListResolver,
-    MessageResolver
-   
+    MessageResolver,
+    AdminService,
   ],
+  entryComponents: [RolesModalComponent],
   bootstrap: [AppComponent],
- 
 })
-export class AppModule { }
+export class AppModule {}

@@ -12,7 +12,7 @@ using Stripe;
 namespace MariageApp.API.Controllers
 {
     [ServiceFilter(typeof(LogUserActivity))]
-    [Authorize]
+
     [Route("[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -33,7 +33,7 @@ namespace MariageApp.API.Controllers
         public async Task<IActionResult> GetUsers([FromQuery] UserParams userParams)
         {
             var currentUserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
-            var userFromRepo = await _repo.GetUser(currentUserId);
+            var userFromRepo = await _repo.GetUser(currentUserId,true);
             userParams.UserId = currentUserId;
             if (string.IsNullOrEmpty(userParams.Gender))
             {
@@ -52,7 +52,9 @@ namespace MariageApp.API.Controllers
 
         public async Task<IActionResult> Getuser(int id)
         {
-            var user = await _repo.GetUser(id);
+            var isCurrentUser = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value) == id;
+
+            var user = await _repo.GetUser(id, isCurrentUser);
             var userToReturn = _mapper.Map<UserForDetailsDto>(user);
             return Ok(userToReturn);
 
@@ -63,7 +65,7 @@ namespace MariageApp.API.Controllers
         {
             if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            var userFromRepo = await _repo.GetUser(id);
+            var userFromRepo = await _repo.GetUser(id,true);
             _mapper.Map(userForUpdateDto, userFromRepo);
             if (await _repo.SaveAll())
                 return NoContent();
@@ -81,7 +83,7 @@ namespace MariageApp.API.Controllers
             var like = await _repo.GetLike(id, recipientId);
             if (like != null)
                 return BadRequest("لقد قمت بالإعجاب بهذا المشترك من قبل");
-            if (await _repo.GetUser(recipientId) == null)
+            if (await _repo.GetUser(recipientId,false) == null)
                 return NotFound();
             like = new Like
             {
@@ -93,17 +95,17 @@ namespace MariageApp.API.Controllers
                 return Ok();
             return BadRequest("فشل في الإعجاب");
         }
-       
-[HttpPost("{userId}/charge/{stripeToken}")]
+
+        [HttpPost("{userId}/charge/{stripeToken}")]
         public async Task<IActionResult> Charge(int userId, string stripeToken)
 
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
-            
+
             var customers = new CustomerService();
             var charges = new ChargeService();
-			
+
             // var options = new TokenCreateOptions
             // {
             // Card = new CreditCardOptions
@@ -118,20 +120,23 @@ namespace MariageApp.API.Controllers
             // var service = new TokenService();
             // Token stripeToken = service.Create(options);
 
-            var customer = customers.Create(new CustomerCreateOptions {
-            Source = stripeToken
+            var customer = customers.Create(new CustomerCreateOptions
+            {
+                Source = stripeToken
             });
 
-            var charge = charges.Create(new ChargeCreateOptions {
-            Amount = 5000,
-            Description = "إشتراك مدى الحياة",
-            Currency = "usd",
-            Customer = customer.Id
+            var charge = charges.Create(new ChargeCreateOptions
+            {
+                Amount = 5000,
+                Description = "إشتراك مدى الحياة",
+                Currency = "usd",
+                Customer = customer.Id
             });
 
-            var payment = new Payment{
+            var payment = new Payment
+            {
                 PaymentDate = DateTime.Now,
-                Amount = charge.Amount/100,
+                Amount = charge.Amount / 100,
                 UserId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value),
                 ReceiptUrl = charge.ReceiptUrl,
                 Description = charge.Description,
@@ -139,15 +144,17 @@ namespace MariageApp.API.Controllers
                 IsPaid = charge.Paid
             };
             _repo.Add<Payment>(payment);
-            if(await _repo.SaveAll()){
-           return Ok(new {IsPaid = charge.Paid } );
+            if (await _repo.SaveAll())
+            {
+                return Ok(new { IsPaid = charge.Paid });
             }
-            
+
             return BadRequest("فشل في السداد");
 
         }
-          [HttpGet("{userId}/payment")]
-        public async Task<IActionResult> GetPaymentForUser(int userId){
+        [HttpGet("{userId}/payment")]
+        public async Task<IActionResult> GetPaymentForUser(int userId)
+        {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
             var payment = await _repo.GetPaymentForUser(userId);
