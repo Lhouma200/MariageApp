@@ -19,3 +19,8 @@ position: initial;
 [type="radio"]:checked:before {
 background-color: pink;
 }
+#toto{
+  text-align: left;
+
+ 
+}

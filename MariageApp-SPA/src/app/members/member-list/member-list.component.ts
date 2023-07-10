@@ -4,6 +4,7 @@ import { UserService } from '../../_services/user.service';
 import { AlertifyService } from '../../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
 import { Pagination, PaginationResult } from 'src/app/_models/Pagination';
+import { AuthService } from 'src/app/_services/auth.service';
 
 
 @Component({
@@ -19,11 +20,21 @@ export class MemberListComponent implements OnInit {
   pagination: Pagination;
   userParams : any = {};
 
-  constructor(private userService: UserService,private alertify:
+  constructor(public authService:AuthService ,private userService: UserService,private alertify:
      AlertifyService ,private route:ActivatedRoute) { }
 
      ngOnInit() {
       // this.loadUsers();
+      this.search=false;
+      this.authService.lang.subscribe(
+        lang=>{
+          if(lang=='fr'){
+            this.genderList =[{value:'رجل',display:'Hommes'},{value:'إمرأة',display:'Femmes'}];
+          }else{
+            this.genderList =[{value:'رجل',display:'رجال'},{value:'إمرأة',display:'نساء'}];
+          }
+        }
+      );
       this.route.data.subscribe(
         data => {
           this.users = data['users'].result;

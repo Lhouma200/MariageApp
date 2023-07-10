@@ -1,18 +1,22 @@
 <div class="container mt-4">
   <div class="row">
     <div class="col-sm-4">
-      <h1>الملف الشخصي</h1>
+      <h1 lang>الملف الشخصي</h1>
     </div>
     <div class="col-sm-8">
-      <div *ngIf="editForm.dirty" class="alert alert-info">
-        <strong>تنويه :</strong>
+      <div  [hidden]="authService.dir=='ltr'"  *ngIf="editForm.dirty" class="alert alert-info">
+        <strong >تنويه :</strong>
         يجب حفظ التعديلات التي تمت على ملفك الشخصي
+      </div>
+      <div  [hidden]="authService.dir=='rtl'"  *ngIf="editForm1.dirty" class="alert alert-info">
+        <strong >Avis :</strong>
+        Les modifications de votre profil doivent être enregistrées      
       </div>
     </div>
     <div class="col-sm-4 mt-3">
       <div class="card">
         <img class="card-img-top img-thumbnail" src="{{photoUrl || 'assets/User.png'}}" alt="{{user.knownAs}}">
-        <div class="card-body">
+        <div [hidden]="authService.dir=='ltr'" class="card-body">
           <div>
             <strong>مكان الإقامة </strong>
             <p>{{user.country}},{{user.city}}</p>
@@ -30,15 +34,34 @@
             <p>{{created}}</p>
           </div>
         </div>
+        <div [hidden]="authService.dir=='rtl'" class="card-body">
+          <div>
+            <strong>Lieu de résidance  </strong>
+            <p>{{user.country}},{{user.city}}</p>
+          </div>
+          <div>
+            <strong>Age </strong>
+            <p>{{age}}</p>
+          </div>
+          <div>
+            <strong> Dérnière apparution </strong>
+            <p>{{lastActive }}</p>
+          </div>
+          <div>
+            <strong> Inscris Depuis </strong>
+            <p>{{created}}</p>
+          </div>
+        </div>
         <div class="card-footer">
           <div>
             
-            <button form="editForm"   [disabled]="!editForm.dirty" class="btn btn-success btn-block">حفظ التعديلات</button>
+            <button [hidden]="authService.dir=='ltr'"  form="editForm"   [disabled]="!editForm.dirty" class="btn btn-success btn-block">حفظ التعديلات</button>
+            <button [hidden]="authService.dir=='rtl'"  form="editForm1"   [disabled]="!editForm1.dirty" class="btn btn-success btn-block">Enregistrer les modifications </button>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-sm-8">
+    <div [hidden]="authService.dir=='ltr'"  class="col-sm-8">
       <div class="tab-Panel">
         <tabset class="member-tabset">
           <tab heading="بياناتي">
@@ -91,6 +114,68 @@
           </tab>
 
           <tab heading="صوري">
+            <app-photo-editor (getMemberPhotoChange)="updateMainPhoto($event)"  [photos]="user.photos"></app-photo-editor>
+            <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
+          </tab>
+
+
+        </tabset>
+      </div>
+    </div>
+    <div [hidden]="authService.dir=='rtl'"  class="col-sm-8">
+      <div class="tab-Panel">
+        <tabset class="member-tabset">
+          <tab heading="
+          Mes données">
+          <form #editForm1 ="ngForm" id="editForm1" (ngSubmit)="updateUser()" >
+            <div class="card">
+              <div class="card-header">
+                <h4 class="text-left"> Je me Présente</h4>
+              </div>
+              <div  class="card-text mt-3 p-2 " >
+                <textarea  id="txtarfr" name="introduction" [(ngModel)]="user.introduction" 
+                class="form-control border-white"></textarea>
+              </div>
+            </div>
+         
+
+            <div class="card mt-4">
+              <div class="card-header">
+                <h4 class="text-left"> Je Cherche</h4>
+              </div>
+              <div class="card-text mt-3 p-2">
+                  <textarea id="txtarfr" name="lookingFor" [(ngModel)]="user.lookingFor" 
+                  class="form-control border-white"></textarea>
+              </div>
+            </div>
+
+            <div class="card mt-4">
+              <div class="card-header">
+                <h4 class="text-left">Mes Passions</h4>
+              </div>
+              <div class="card-text mt-3 p-2">
+                  <textarea id="txtarfr" name="interests" [(ngModel)]="user.interests" 
+                  class="form-control border-white"></textarea>
+              </div>
+            </div>
+            <div class="card mt-4">
+                <div class="card-header">
+                  <h4 class="text-left"> Je réside</h4>
+                </div>
+                <div class="card-text mt-3">
+                    <div class="form-inline p-2">
+                      <label for="country">Pays</label>
+                      <input id="txtarfr" type="text" name="country" [(ngModel)]="user.country" class="ml-2 form-control">
+                      <label class="ml-4 " for="city">Ville</label>
+                      <input id="txtarfr" type="text" name="city" [(ngModel)]="user.city" class="form-control ml-2">
+                    </div>
+                </div>
+              </div>
+            </form>
+
+          </tab>
+
+          <tab heading="Mes Photos">
             <app-photo-editor (getMemberPhotoChange)="updateMainPhoto($event)"  [photos]="user.photos"></app-photo-editor>
             <!-- <ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery> -->
           </tab>

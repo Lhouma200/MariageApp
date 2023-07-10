@@ -16,7 +16,7 @@ export class MessagesComponent implements OnInit {
   pagination: Pagination;
   messageType = 'Unread';
 
-  constructor(private userService:UserService,private authService:AuthService,private route:ActivatedRoute,private alertify:AlertifyService) { }
+  constructor(private userService:UserService,public authService:AuthService,private route:ActivatedRoute,private alertify:AlertifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(

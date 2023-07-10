@@ -1,4 +1,4 @@
-<form (ngSubmit)="register()" [formGroup]="registerForm" class="rtl">
+<form [hidden]="authService.dir=='ltr'"  (ngSubmit)="register()" [formGroup]="registerForm" class="rtl">
   <h4 style="font-weight:bold;font-family:'JF Flat';" class="text-center text-dark">شريكك في الحياة بإنتظارك</h4>
   <hr>
   <div class="form-group">
@@ -56,3 +56,65 @@
   </div>
   
 </form>
+<form [hidden]="authService.dir=='rtl'"  (ngSubmit)="register()" [formGroup]="registerForm" >
+  <h4 style="font-weight:bold;font-family:'JF Flat';" class="text-center text-dark"> Ton Partenaire T'attends  </h4>
+  <hr>
+  <div id="toto" class="form-group">
+ 
+    <label class="radio-inline ml-2 ">
+      <label class="radio-inline ml-3">
+        <input class="mr-1" type="radio" value="إمرأة" formControlName="gender">Femme
+      </label>
+      <input class="text-left" class="mr-1" type="radio" value="رجل"
+       formControlName="gender">Homme
+       <label  class="control-label" style="margin-right:10px">Moi </label>
+    </label>
+    
+  </div>
+
+  <div class="form-group">
+    <input id="toto"  formControlName ="username"  type="text" [ngClass]="{'is-invalid' : registerForm.get('username').errors && registerForm.get('username').touched}" class=" form-control text-right" placeholder="Nom ">
+  <div id="toto"  class="invalid-feedback  ">  Entrer Votre Nom</div>
+  </div>
+  <div class="form-group">
+    <input id="toto"  [ngClass]="{'is-invalid': registerForm.get('knownAs').errors && registerForm.get('knownAs').touched}" class="form-control"
+      placeholder="Pseudo" formControlName="knownAs">
+    <div id="toto"  class="invalid-feedback" *ngIf="registerForm.get('knownAs').touched && registerForm.get('knownAs').hasError('required')"> Entrer Votre Pseudo </div>
+  </div>
+  <div class="form-group">
+    <input id="toto"  [ngClass]="{'is-invalid': registerForm.get('dateOfBirth').errors && registerForm.get('dateOfBirth').touched}" class="form-control"
+      placeholder="Anniversaire " formControlName="dateOfBirth"  type="text" bsDatepicker [bsConfig]="bsConfig" >
+    <div id="toto"  class="invalid-feedback" *ngIf="registerForm.get('dateOfBirth').touched && registerForm.get('dateOfBirth').hasError('required')">Entrer Votre Anniversaire  </div>
+  </div>
+  <div class="form-group">
+    <input id="toto"  [ngClass]="{'is-invalid': registerForm.get('city').errors && registerForm.get('city').touched}" class="form-control"
+      placeholder="Ville" formControlName="city">
+    <div id="toto" class="invalid-feedback" *ngIf="registerForm.get('city').touched && registerForm.get('city').hasError('required')"> Entrer votre ville </div>
+  </div>
+
+  <div class="form-group">
+    <input id="toto"  [ngClass]="{'is-invalid': registerForm.get('country').errors && registerForm.get('country').touched}" class="form-control"
+      placeholder="Pays" formControlName="country">
+    <div id="toto"  class="invalid-feedback" *ngIf="registerForm.get('country').touched && registerForm.get('country').hasError('required')">Entrer Votre Pays  </div>
+  </div>
+  <div class="form-group">
+    <input id="toto"  formControlName ="password"  type="password" [ngClass]="{'is-invalid' : registerForm.get('password').errors && registerForm.get('password').touched}" class="form-control" placeholder="Password ">
+    <div id="toto"  *ngIf="registerForm.get('password').hasError('required') && registerForm.get('password').touched" class="invalid-feedback"> Entrer votre Mot De Passe  </div>
+    <div id="toto"  *ngIf="registerForm.get('password').hasError('minlength') && registerForm.get('password').touched" class="invalid-feedback"> Minimum Quatre caractères</div>
+    <div id="toto"  *ngIf="registerForm.get('password').hasError('maxlength') && registerForm.get('password').touched" class="invalid-feedback">   Maximum huit caractères      </div>
+  </div>
+  <div class="form-group">
+    <input id="toto"  formControlName ="confirmPassword"  type="password" [ngClass]="{'is-invalid' : registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched || registerForm.get('confirmPassword').touched && registerForm.hasError('mismatch')}" class="form-control" placeholder=" Comfirmer le Mot De Passe">
+    <div id="toto"  class="invalid-feedback" *ngIf="registerForm.get('confirmPassword').hasError('required') && registerForm.get('confirmPassword').touched"> Comfirmer le Mot De Passe    </div>
+    <div id="toto"  class="invalid-feedback" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword').touched"> Mot De passe Incorrect</div>
+  </div>
+  
+  
+
+  <div class="form-group text-center">
+    <button [disabled]="!registerForm.valid" style="font-weight:bold;font-family:'JF Flat';" class="btn btn-primary btn-lg" type="submit">Abonnement</button>
+    <button (click)="cancel()" style="font-weight:bold;font-family:'JF Flat';" class="btn btn-primary btn-lg ml-2" type="button"> Plutard</button>
+  </div>
+  
+</form>
+

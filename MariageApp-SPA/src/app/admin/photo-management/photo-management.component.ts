@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AdminService } from 'src/app/_services/admin.service';
 import { AlertifyService } from 'src/app/_services/alertify.service';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-photo-management',
@@ -9,7 +10,7 @@ import { AlertifyService } from 'src/app/_services/alertify.service';
 })
 export class PhotoManagementComponent implements OnInit {
 
-  constructor(private adminService: AdminService , private alertify:AlertifyService) { }
+  constructor(private adminService: AdminService , private alertify:AlertifyService,public authService:AuthService) { }
   photos: any[];
   ngOnInit() {
     this.getPhotosForApproval();

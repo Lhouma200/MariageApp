@@ -21,3 +21,7 @@
 .modal-footer{
     display: block !important;
 }
+.form-check-input{
+
+    border-radius: 15px;
+}

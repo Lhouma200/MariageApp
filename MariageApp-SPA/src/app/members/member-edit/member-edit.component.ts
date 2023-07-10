@@ -13,9 +13,11 @@ import { UserService } from 'src/app/_services/user.service';
 })
 export class MemberEditComponent implements OnInit {
   @ViewChild('editForm') editForm: NgForm
+  @ViewChild('editForm1') editForm1: NgForm
   user: User
   created:string;
   age:string;
+  lastActive :string;
   options :  Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   photoUrl:string;
@@ -26,7 +28,7 @@ export class MemberEditComponent implements OnInit {
    }
  }
   constructor(private route: ActivatedRoute, private alertify: AlertifyService,private userService:UserService,
-    private authService:AuthService) { }
+    public authService:AuthService) { }
 
   ngOnInit() {
     this.route.data.subscribe(data => {
@@ -35,6 +37,38 @@ export class MemberEditComponent implements OnInit {
     this.authService.currentPhotoUrl.subscribe(photoUrl=>this.photoUrl=photoUrl);
     this.created = new Date(this.user.created).toLocaleString('ar-EG',this.options).replace('،','');
     this.age = this.user.age.toLocaleString('ar-EG');
+    this.authService.lang.subscribe(
+      lang=>{
+    if(lang=='fr'){
+       this.age = this.user.age.toLocaleString('fr');
+    }
+    else{
+      this.age = this.user.age.toLocaleString('ar-EG');
+    }
+    if(lang=='fr'){
+      this.created = new Date(this.user.created)
+      .toLocaleString('fr', this.options)
+      .replace('،', '');
+   }
+   else{
+    this.created = new Date(this.user.created)
+    .toLocaleString('ar-EG', this.options)
+    .replace('،', '');
+   }
+   if(lang=='fr'){
+    this.lastActive = new Date(this.user.lastActive)
+    .toLocaleTimeString('fr', this.options)
+    .replace('،', '');
+ }
+ else{
+  this.lastActive = new Date(this.user.lastActive)
+  .toLocaleString('ar-EG', this.options)
+  .replace('،', '');
+ }
+
+      }
+
+      );
   }
   updateUser() {
     
@@ -42,6 +76,7 @@ export class MemberEditComponent implements OnInit {
     this.userService.updateUser(this.authService.decodedToken.nameid,this.user).subscribe(()=>{
      this.alertify.success('تم تعديل الملف الشخصي بنجاح');
      this.editForm.reset(this.user);
+     this.editForm1.reset(this.user);
     },error=>this.alertify.error(error))
          
    }

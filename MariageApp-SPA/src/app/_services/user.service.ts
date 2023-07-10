@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { User } from '../_models/user';
 import { PaginationResult } from '../_models/Pagination';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Message } from '../_models/message';
 
 
@@ -104,10 +104,26 @@ deleteMessage(id:number,userId:number){
 getPaymentForUser(userId:number){
   return this.http.get(this.baseUrl + userId + '/payment');
 }
-
-
-
-
-
+GetReportForUser(id:number):any  {
+  return this.http.get(this.baseUrl + 'UserReport/'+id,{ headers: 
+    new HttpHeaders({'Content-Type': 'application/pdf'}),responseType:'blob'}).pipe (
+  tap (
+      () => console.log('تم إستلام الملف بنجاح'),
+      error => console.log(error)
+   )
+ );
+}
+GetReportForUser1(id:number):any  {
+  return this.http.get(this.baseUrl + 'UserReport1/'+id,{ headers: 
+    new HttpHeaders({'Content-Type': 'application/pdf'}),responseType:'blob'}).pipe (
+  tap (
+      () => console.log('تم إستلام الملف بنجاح'),
+      error => console.log(error)
+   )
+ );
+}
+getAllUsers(){
+  return this.http.get(this.baseUrl+'GetAllUsersExceptAdmin');
+}
 
 }

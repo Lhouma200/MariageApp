@@ -52,6 +52,8 @@ import { UserManagementComponent } from './admin/user-management/user-management
 import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
 import { AdminService } from './_services/admin.service';
 import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
+import { LangDirective } from './_directives/lang.directive';
+import { AllMembersReportComponent } from './_reports/all-members-report/all-members-report.component';
 
 @Pipe({
   name: 'timeAgo',
@@ -85,6 +87,8 @@ export function tokenGetter() {
     UserManagementComponent,
     PhotoManagementComponent,
     RolesModalComponent,
+    LangDirective,
+    AllMembersReportComponent,
   ],
   imports: [
     BrowserModule,

@@ -23,7 +23,7 @@ export class PhotoEditorComponent implements OnInit {
   user:User
 
 
-  constructor(private route: ActivatedRoute, private authService: AuthService,private userService:UserService, private alertify:AlertifyService) { }
+  constructor(private route: ActivatedRoute, public authService: AuthService,private userService:UserService, private alertify:AlertifyService) { }
 
   ngOnInit() {
     this.initializeUploader();

@@ -16,7 +16,7 @@ users:User[];
 pagination:Pagination;
 likeParam:string;
 search:boolean=false;
-  constructor(private authService:AuthService,private userService:UserService,private route:ActivatedRoute,private alertify:AlertifyService) { }
+  constructor(public authService:AuthService,private userService:UserService,private route:ActivatedRoute,private alertify:AlertifyService) { }
 
   ngOnInit() {
     this.route.data.subscribe(

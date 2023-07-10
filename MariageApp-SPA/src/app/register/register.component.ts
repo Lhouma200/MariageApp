@@ -4,10 +4,11 @@ import { AlertifyService } from '../_services/alertify.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { BsDatepickerConfig, BsLocaleService } from 'ngx-bootstrap';
 import { defineLocale } from 'ngx-bootstrap/chronos';
-import { arLocale } from 'ngx-bootstrap/locale';
+import { arLocale,frLocale } from 'ngx-bootstrap/locale';
 import { User } from '../_models/user';
 import { Router } from '@angular/router';
 defineLocale('ar', arLocale);
+defineLocale('fr', frLocale);
 
 @Component({
   selector: 'app-register',
@@ -20,10 +21,22 @@ export class RegisterComponent implements OnInit {
   user: User;
 registerForm:FormGroup;
 bsConfig: Partial<BsDatepickerConfig>
+
 locale = 'ar';
-  constructor( private router: Router,private authService:AuthService, private alertify:AlertifyService,
+locale1 = 'fr';
+  constructor( private router: Router,public authService:AuthService, private alertify:AlertifyService,
     private fb : FormBuilder, private localeService: BsLocaleService) { 
-      this.localeService.use(this.locale);
+
+      this.authService.lang.subscribe(
+        lang=>{
+          if(lang=='fr'){
+            this.localeService.use(this.locale1);
+          }else{
+            this.localeService.use(this.locale);
+          }
+        }
+      );
+      
     }
 
   ngOnInit() {
@@ -31,6 +44,7 @@ locale = 'ar';
       containerClass: 'theme-red',
       showWeekNumbers: false
     };
+ 
    
       this.createRegisterForm();
     

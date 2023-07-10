@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap';
 import { User } from 'src/app/_models/user';
+import { AuthService } from 'src/app/_services/auth.service';
 
 @Component({
   selector: 'app-roles-modal',
@@ -12,7 +13,7 @@ export class RolesModalComponent implements OnInit {
   user:User;
   roles:any[];
  
-  constructor(public bsModalRef: BsModalRef) {}
+  constructor(public bsModalRef: BsModalRef, public authService:AuthService) {}
 
   ngOnInit() {
   }

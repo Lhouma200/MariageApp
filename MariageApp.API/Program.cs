@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using ZwajApp.API.Data;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +68,8 @@ builder.Services.AddMvc(options=>{
 });
 
 builder.Services.AddSignalR();
+builder.Services.AddSingleton(typeof(IConverter),new SynchronizedConverter(new PdfTools()));
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CORSPolicy", builder => builder.AllowAnyMethod().AllowAnyHeader().AllowCredentials().SetIsOriginAllowed((hosts) => true));

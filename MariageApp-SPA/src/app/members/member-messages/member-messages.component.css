@@ -1,4 +1,4 @@
-member-messages.css.txt
+
 .card {
     border: none;
   }
@@ -77,4 +77,9 @@ member-messages.css.txt
         outline:none !important;box-shadow:none; }
     
  
-  
+  #Outbox{
+    text-align: left;
+    padding-top: 12px;
+    text-indent: 11px;
+    
+  }

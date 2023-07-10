@@ -13,10 +13,14 @@ import { HubConnection, HubConnectionBuilder } from '@aspnet/signalr';
 export class AuthService {
   jwtHelper =new JwtHelperService ();
   baseUrl= environment.apiUrl+'auth/' ;
+  siteLang:string='ar';
+  dir:string = 'rtl';
   decodedToken :any;
   currentUser:User;
   paid:boolean=false;
   photoUrl = new BehaviorSubject<string>('../../assets/User.png');
+  language = new BehaviorSubject<string>('ar');
+  lang = this.language.asObservable();
   currentPhotoUrl = this.photoUrl.asObservable();
   unreadCount = new BehaviorSubject<string>('');
   latestUnreadCount = this.unreadCount.asObservable();
@@ -24,7 +28,19 @@ export class AuthService {
   .withUrl('http://localhost:5112/chat')
   .build();
 
-constructor(private http: HttpClient) { }
+constructor(private http: HttpClient) {
+  this.lang.subscribe(
+    lang=>{
+      if(lang == 'fr'){
+        this.dir = 'ltr';
+        this.siteLang = 'fr';
+      }else{
+        this.dir = 'rtl';
+        this.siteLang = 'ar';
+      }
+    }
+  );
+ }
 changeMemberPhoto(newPhotoUrl:string){
   this.photoUrl.next(newPhotoUrl);
 }

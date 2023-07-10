@@ -151,5 +151,30 @@ namespace MariageApp.API.Data
             return await _context.Payments.FirstOrDefaultAsync(p => p.UserId == userId);
 
         }
+
+        public async Task<ICollection<User>> GetLikersOrLikees(int userId, string type)
+        {
+               var users = _context.Users.Include(u=>u.Photos).OrderBy(u=>u.UserName).AsQueryable();
+            if(type=="likers")
+           {
+               var userLikers = await GetUserLikes(userId,true);
+               users =  users.Where(u=>userLikers.Contains(u.Id));
+           }
+           else if(type=="likees")
+           {
+               var userLikees = await GetUserLikes(userId,false);
+               users =  users.Where(u=>userLikees.Contains(u.Id));
+           }
+           else{
+               throw new Exception("لا توجد بيانات متاحة");
+           }
+
+           return users.ToList();
+        }
+        
+        public async Task<ICollection<User>> GetAllUsersExceptAdmin()
+        {
+            return await _context.Users.OrderBy(u=>u.NormalizedUserName).Where(u=>u.NormalizedUserName!="ADMIN").ToListAsync();
+        }
     }
 }

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 export class HomeComponent implements OnInit {
   registerMode:boolean=false;
 
-  constructor(private http:HttpClient, private authService:AuthService, private router:Router) { }
+  constructor(private http:HttpClient, public authService:AuthService, private router:Router) { }
 
   ngOnInit() {
     if(this.authService.loggedIn())

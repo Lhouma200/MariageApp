@@ -82,11 +82,11 @@ h4{
   text-align: right;
   text-shadow: 1px 1px 2px red, 0 0 25px white, 0 0 5px darkblue;
 }
-h2{
+h1{
   letter-spacing: 0.9px;
   font-weight:bolder;
   font-family:'Droid-Arabic-Kufi-1';
-  font-size:1.5rem;
+  font-size:1.8rem;
   padding: 10px;
   color: white;
   text-shadow: 1px 2px 2px rgb(99, 97, 3), 0 0 10px rgb(251, 229, 86), 0 0 2px rgb(99, 97, 3);

@@ -15,7 +15,7 @@ model :any = {};
 photoUrl:string;
 count:string;
 hubConnection:HubConnection;
-  constructor( private authService: AuthService, private alertify:AlertifyService, private router:Router,private userService:UserService) { }
+  constructor( public authService: AuthService, private alertify:AlertifyService, private router:Router,private userService:UserService) { }
 
   ngOnInit() {
     this.authService.currentPhotoUrl.subscribe(
@@ -75,6 +75,13 @@ hubConnection:HubConnection;
         this.authService.paid = false;
       }
     )
+  }
+  ar(){
+    this.authService.language.next('ar');
+  }
+
+  fr(){
+    this.authService.language.next('fr');
   }
 }
 

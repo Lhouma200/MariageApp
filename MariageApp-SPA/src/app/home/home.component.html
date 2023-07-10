@@ -1,9 +1,26 @@
-<div  class="rtl container mt-5">
+<div [hidden]="authService.dir=='ltr'"   class=" container mt-5">
   <div *ngIf="!registerMode" style="text-align: center">
     <h2 style="font-family:'JF FLAT'">زواج يأتي لك بشريكك في الحياة</h2>
     <h5 style="font-family:'JF FLAT'">تخيل حياتك مع توأم روحك. مع زواج، أنت الآن على بعد خطوة من تحقيق حلمك</h5>
     <div class="text-center">
       <button (click)="registerToggle()" style="font-family:'JF FLAT'" class="btn btn-primary btn-lg">إشترك معنا</button>
+       </div>
+  </div>
+
+  <div *ngIf="registerMode" class="container">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <app-register  (cancelRegister)="cancelRegister($event)"></app-register> 
+      </div>
+    </div>
+  </div>
+</div>
+<div [hidden]="authService.dir=='rtl'"   class="rtl container mt-5">
+  <div *ngIf="!registerMode" style="text-align: center">
+    <h2 style="font-family:'arial'">  Le mariage vous apporte votre partenaire dans la vie   </h2>
+    <h3 id="H3Fr" ></h3>Imaginez votre vie avec votre âme sœur. Avec le mariage, vous êtes maintenant à un pas de la réalisation de votre rêve
+    <div class="text-center">
+      <button (click)="registerToggle()" style="font-family:'JF FLAT'" class="btn btn-primary btn-lg "> Abonnez-Vous</button>
        </div>
   </div>
 

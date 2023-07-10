@@ -1,10 +1,10 @@
-<div class="row">
+<div [hidden]="authService.dir=='ltr'"  class="row">
     <div class="ml-4 img-wrapper " *ngFor="let photo of photos">
         <img src="{{photo.url}}" class="img-thumbnail" [ngClass]="!photo.isApproved && 'not-approved'" alt="">
-        <div class="text-center img-text" *ngIf="!photo.isApproved">
+        <div class="text-center img-text ml-2" *ngIf="!photo.isApproved">
             <span class="text-danger">بإنتظار الموافقة</span>
         </div>
-        <div class="row text-center mb-4" style="margin-right:2px;margin-top:-3px;">
+        <div class="row text-center mb-4 ml-2" style="margin-right:2px;margin-top:-3px;">
             <button type="button" (click)="setMainPhoto(photo)" 
             [disabled]="photo.isMain || !photo.isApproved"
             [ngClass]="photo.isMain ? 'btn btn-sm btn-success btn-down' :
@@ -14,19 +14,35 @@
 
     </div>
 </div>
+<div [hidden]="authService.dir=='rtl'"  class="row">
+    <div class="ml-4 img-wrapper " *ngFor="let photo of photos">
+        <img src="{{photo.url}}" class="img-thumbnail" [ngClass]="!photo.isApproved && 'not-approved'" alt="">
+        <div class="text-center img-text ml-3" *ngIf="!photo.isApproved">
+            <span class="text-danger"> En Attente </span>
+        </div>
+        <div class="row text-center mb-4 ml-1 " style="margin-right:2px;margin-top:-3px;">
+            <button type="button" (click)="setMainPhoto(photo)" 
+            [disabled]="photo.isMain || !photo.isApproved"
+            [ngClass]="photo.isMain ? 'btn btn-sm btn-success btn-down' :
+             'btn btn-sm btn-outline-success btn-down' "><strong>principal</strong></button>
+            <button type="button" [disabled]="photo.isMain" (click)="delete(photo.id)" class="btn btn-sm btn-outline-danger btn-down"><i class="fa fa-trash-o"></i></button>
+        </div>
+
+    </div>
+</div>
 
 
-<div class="row">
+<div  class="row">
     <div class="col-sm-4 mt-5 Font-Kufi">
 
-        <h4 class="Font-Kufi">إختر الصور</h4>
+        <h4 lang class="Font-Kufi">إختر الصور</h4>
 
         <div ng2FileDrop [ngClass]="{'nv-file-over': hasBaseDropZoneOver}" (fileOver)="fileOverBase($event)" [uploader]="uploader"
             [class.bg-warning]="hasBaseDropZoneOver"  class="card mt-5 text-center p-3 my-drop-zone">
             <i [class.text-danger]="hasBaseDropZoneOver" class="fa fa-upload fa-4x"></i>
-            <p>سحب و إفلات الصور</p>
+            <p lang>سحب و إفلات الصور</p>
         </div>
- <div class="btn-group-vertical">
+ <div [hidden]="authService.dir=='ltr'" class="btn-group-vertical">
     <input [hidden] ="true" #uploadMult type="file" ng2FileSelect [uploader]="uploader" multiple />
     <button  class="btn ajs-button btn-up"  (click)="uploadMult.click();" >
        إختر صور متعددة 
@@ -37,18 +53,32 @@
         إختر صورة واحدة 
     </button>
  </div>
+ <div [hidden]="authService.dir=='rtl'" class="btn-group-vertical">
+    <input [hidden] ="true" #uploadMult type="file" ng2FileSelect [uploader]="uploader" multiple />
+    <button  class="btn ajs-button btn-up"  (click)="uploadMult.click();" >
+          Choisissez plusieurs Photos
+    </button>
+   
+    <input [hidden] ="true" #uploadOne type="file" ng2FileSelect [uploader]="uploader" />
+    <button  class="mt-1 btn ajs-button btn-down"  (click)="uploadOne.click();" >
+          Choisissez une seule photo 
+    </button>
+ </div>
+
  </div>
   
     <div *ngIf="uploader?.queue?.length" class="col-sm-8 mt-5 Font-Kufi" style="margin-bottom: 40px">
 
-        <h4 class="Font-Kufi">ملفات الصور</h4>
-        <p>عدد الصور: {{ uploader?.queue?.length }}</p>
+        <h4 lang class="Font-Kufi">ملفات الصور</h4>
+        <p [hidden]="authService.dir=='ltr'"  >عدد الصور: {{ uploader?.queue?.length }}</p>
+        <p [hidden]="authService.dir=='rtl'"  > Nombre de Photos: {{ uploader?.queue?.length }}</p>
+
 
         <table class="table">
             <thead>
                 <tr>
-                    <th width="50%">الإسم</th>
-                    <th>الحجم</th>
+                    <th lang width="50%">الإسم</th>
+                    <th lang>الحجم</th>
                     <th colspan="3"></th>
                 </tr>
             </thead>
@@ -57,7 +87,7 @@
                     <td style="overflow: hidden;"><strong>{{ item?.file?.name }}</strong></td>
                     <td *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</td>
                
-                    <td nowrap>
+                    <td [hidden]="authService.dir=='ltr'"  nowrap>
                         <button type="button" class="btn btn-success btn-sm btn-up mr-1" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
                             <i class="fa fa-upload"></i> تحميل
                         </button>
@@ -68,18 +98,29 @@
                             <i class="fa fa-trash-o"></i> حذف
                         </button>
                     </td>
+                    <td [hidden]="authService.dir=='rtl'"  nowrap>
+                        <button type="button" class="btn btn-success btn-sm btn-up mr-1" (click)="item.upload()" [disabled]="item.isReady || item.isUploading || item.isSuccess">
+                            <i class="fa fa-upload"></i> Chargement
+                        </button>
+                        <button type="button" class="btn btn-warning btn-sm mr-1 btn-up" (click)="item.cancel()" [disabled]="!item.isUploading">
+                            <i class="fa fa-ban"></i> Annulation
+                        </button>
+                        <button type="button" class="btn btn-danger btn-sm mr-1 btn-up" (click)="item.remove()">
+                            <i class="fa fa-trash-o"></i> Suppression
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
 
         <div>
             <div>
-               <p style="text-align: right;margin-right:20px;" class="mb-1">تقدم التحميل </p> 
+               <p lang style="text-align: right;margin-right:20px;" class="mb-1">تقدم التحميل </p> 
                 <div class="progress">
                     <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"></div>
                 </div>
             </div>
-            <div class="text-center p-3">
+            <div [hidden]="authService.dir=='ltr'"  class="text-center p-3">
                 <button type="button" class="btn btn-success mr-1 " (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
                     <i class="fa fa-upload"></i> تحميل الكل
                 </button>
@@ -89,6 +130,17 @@
                 <button type="button" class="btn btn-danger mr-1" (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
                     <i class="fa fa-trash-o"></i> حذف الكل
                 </button>
+            </div>
+            <div [hidden]="authService.dir=='rtl'"  class="text-center p-3" >
+                <button type="button" class="btn btn-success mr-1 btn-sm  " (click)="uploader.uploadAll()" [disabled]="!uploader.getNotUploadedItems().length">
+                    <i class="fa fa-upload"></i>Tout Charger </button>
+               
+                <button type="button" class="btn btn-warning mr-1 btn-sm " (click)="uploader.cancelAll()" [disabled]="!uploader.isUploading">
+                    <i class="fa fa-ban"></i>Tout Annuler  </button>
+       
+                <button type="button" class="btn btn-danger mr-1 btn-sm " (click)="uploader.clearQueue()" [disabled]="!uploader.queue.length">
+                    <i class="fa fa-trash-o"></i>Tout Supprimer </button>
+                
             </div>
            
         </div>
